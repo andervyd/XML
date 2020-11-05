@@ -1,4 +1,4 @@
-package by.andervyd.sax.readxmlwithsax;
+package by.andervyd.sax.customer;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;

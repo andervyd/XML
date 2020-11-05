@@ -1,5 +1,14 @@
-package by.andervyd.sax.readxmlwithsax;
+package by.andervyd.sax.error;
 
+import by.andervyd.sax.customer.Customer;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -9,17 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
-
 @SuppressWarnings("unused")
-public class SAXCustomerHandler extends DefaultHandler {
+public class SAXCustomerHandlerWithError extends DefaultHandler {
 
 	private List<Customer> data;
 	private Customer customer;
@@ -29,13 +29,19 @@ public class SAXCustomerHandler extends DefaultHandler {
 	private static final String XMLDATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
 	public List<Customer> readDataFromXML(String filename)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws IOException, ParserConfigurationException {
 		
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		SAXParser parser = factory.newSAXParser();
-		
-		parser.parse(new File(filename), this);
-		
+		try {
+
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			SAXParser parser = factory.newSAXParser();
+
+ 			parser.parse(new File(filename), this);
+
+		} catch (SAXException e) {
+			System.out.println(e.getMessage());
+		}
+
 		return data;
 	}
 	
@@ -45,11 +51,6 @@ public class SAXCustomerHandler extends DefaultHandler {
 		data = new ArrayList<>();
 	}
 
-	@Override
-	public void endDocument() {
-
-	}
-	
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
@@ -128,5 +129,20 @@ public class SAXCustomerHandler extends DefaultHandler {
 		if(currentText != null) {
 			currentText.append(ch, start, length);
 		}
+	}
+
+	@Override
+	public void warning(SAXParseException e) {
+		System.out.println("Warning!");
+	}
+
+	@Override
+	public void error(SAXParseException e) {
+		System.out.println("Error!");
+	}
+
+	@Override
+	public void fatalError(SAXParseException e) {
+		System.out.println("Fatal error!");
 	}
 }

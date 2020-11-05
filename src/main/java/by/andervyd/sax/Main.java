@@ -1,10 +1,12 @@
-package by.andervyd.sax.readxmlwithsax;
+package by.andervyd.sax;
 
 import by.andervyd.introdaction.dataprovider.DataProvider;
+import by.andervyd.sax.customer.Customer;
+import by.andervyd.sax.error.SAXCustomerHandlerWithError;
 
 import java.util.List;
 
-public class ReadXMLWithSAX {
+public class Main {
 
 	public static void main(String[] args) throws Exception {
 

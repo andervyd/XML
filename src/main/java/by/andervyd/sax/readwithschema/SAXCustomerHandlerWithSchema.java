@@ -1,8 +1,8 @@
-package by.andervyd.sax.readxmlwithsax;
+package by.andervyd.sax.readwithschema;
 
+import by.andervyd.sax.customer.Customer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class SAXCustomerHandlerWithError extends DefaultHandler {
+public class SAXCustomerHandlerWithSchema extends DefaultHandler {
 
 	private List<Customer> data;
 	private Customer customer;
@@ -27,20 +27,14 @@ public class SAXCustomerHandlerWithError extends DefaultHandler {
 
 	private static final String XMLDATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
-	public List<Customer> readDataFromXML(String filename)
-			throws IOException, ParserConfigurationException {
+	public List<Customer> readDataFromXML(String filename) throws SAXException, IOException, ParserConfigurationException {
 		
-		try {
-
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-
- 			parser.parse(new File(filename), this);
-
-		} catch (SAXException e) {
-			System.out.println(e.getMessage());
-		}
-
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		SAXParser parser = factory.newSAXParser();
+		
+		parser.parse(new File(filename), this);
+		
 		return data;
 	}
 	
@@ -51,20 +45,27 @@ public class SAXCustomerHandlerWithError extends DefaultHandler {
 	}
 
 	@Override
+	public void endDocument() {
+		System.out.println("End document");
+	}
+	
+	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
 
-		currentElement = qName;
+		currentElement = localName;
 		
 		switch (currentElement) {
 		case "customers":
 				break;
 
 		case "customer":
-			customer = new Customer();
-			String idAsString = attributes.getValue(Customer.ID);
-			customer.setId(Integer.parseInt(idAsString));
-			data.add(customer);
+			if(uri.equals("http://www.example.org/customers")) {
+				customer = new Customer();
+				String idAsString = attributes.getValue(Customer.ID);
+				customer.setId(Integer.parseInt(idAsString));
+				data.add(customer);
+			}
 				break;
 
 		default:
@@ -76,7 +77,8 @@ public class SAXCustomerHandlerWithError extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) {
 
-		if(currentElement.equals("customers") || currentElement.equals("customer")) {
+		if(currentElement.equals("customers") || currentElement.equals("customer") ||
+				!uri.equals("http://www.example.org/customers")) {
 			return;
 		}
 
@@ -128,20 +130,5 @@ public class SAXCustomerHandlerWithError extends DefaultHandler {
 		if(currentText != null) {
 			currentText.append(ch, start, length);
 		}
-	}
-
-	@Override
-	public void warning(SAXParseException e) {
-		System.out.println("Warning!");
-	}
-
-	@Override
-	public void error(SAXParseException e) {
-		System.out.println("Error!");
-	}
-
-	@Override
-	public void fatalError(SAXParseException e) {
-		System.out.println("Fatal error!");
 	}
 }
