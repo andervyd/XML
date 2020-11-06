@@ -2,7 +2,7 @@ package by.andervyd.sax;
 
 import by.andervyd.introdaction.dataprovider.DataProvider;
 import by.andervyd.sax.customer.Customer;
-import by.andervyd.sax.error.SAXCustomerHandlerWithError;
+import by.andervyd.sax.read.SAXCustomerHandler;
 
 import java.util.List;
 
@@ -10,13 +10,14 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-//		String filename = DataProvider.DATADIR + "customers.xml";
-		String filename = DataProvider.DATADIR + "ERcustomers.xml";
+		String filename = DataProvider.DATADIR + "customers.xml";
+//		String filename = DataProvider.DATADIR + "ERcustomers.xml";
 //		String filename = DataProvider.DATADIR + "NScustomers.xml";
 
-//		SAXCustomerHandler saxHandler = new SAXCustomerHandler();
-		SAXCustomerHandlerWithError saxHandler = new SAXCustomerHandlerWithError();
+		SAXCustomerHandler saxHandler = new SAXCustomerHandler();
+//		SAXCustomerHandlerWithError saxHandler = new SAXCustomerHandlerWithError();
 //		SAXCustomerHandlerWithSchema saxHandler = new SAXCustomerHandlerWithSchema();
+
 		List<Customer> data = saxHandler.readDataFromXML(filename);
 		System.out.println("Number of customers: " + data.size());
 		
