@@ -1,9 +1,9 @@
 package by.andervyd.introdaction.model;
 
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Date;
+
 
 public class Customer {
 
