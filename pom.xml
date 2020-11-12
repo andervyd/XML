@@ -13,9 +13,18 @@
   <url>http://www.example.com</url>
 
   <properties>
+
+    <json-simple.version>1.1</json-simple.version>
+    <junit.version>4.13</junit.version>
+    <jdom2.version>2.0.5</jdom2.version>
+    <jaxen.version>1.1.6</jaxen.version>
+    <stax-utils.version>20070216</stax-utils.version>
+    <simple-xml.version>2.7.1</simple-xml.version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+
   </properties>
 
   <dependencies>
@@ -24,13 +33,13 @@
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
-      <version>1.1</version>
+      <version>${json-simple.version}</version>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -38,21 +47,28 @@
     <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom2</artifactId>
-      <version>2.0.5</version>
+      <version>${jdom2.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
     <dependency>
       <groupId>jaxen</groupId>
       <artifactId>jaxen</artifactId>
-      <version>1.1.6</version>
+      <version>${jaxen.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.java.dev.stax-utils/stax-utils -->
     <dependency>
       <groupId>net.java.dev.stax-utils</groupId>
       <artifactId>stax-utils</artifactId>
-      <version>20070216</version>
+      <version>${stax-utils.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.simpleframework/simple-xml -->
+    <dependency>
+      <groupId>org.simpleframework</groupId>
+      <artifactId>simple-xml</artifactId>
+      <version>${simple-xml.version}</version>
     </dependency>
 
   </dependencies>
@@ -102,4 +118,5 @@
       </plugins>
     </pluginManagement>
   </build>
+
 </project>
